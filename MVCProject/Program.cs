@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using MVCProject.Interfaces;
+using MVCProject.Models;
+using MVCProject.Repositories;
+
 namespace MVCProject
 {
     public class Program
@@ -8,6 +13,20 @@ namespace MVCProject
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            // to use Injection
+            //for connection service
+            builder.Services.AddDbContext<Context>(option =>
+            option.UseSqlServer(builder.Configuration.GetConnectionString("cs")));
+
+            //Register all Interfaces with their classes that implement them
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
+            builder.Services.AddScoped<ICarRepo, CarRepo>();
+            builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+            builder.Services.AddScoped<IClientRepo, ClientRepo>();
+            builder.Services.AddScoped<IPurchaseRepo, PurchaseRepo>();
+
 
             var app = builder.Build();
 
